@@ -1,0 +1,37 @@
+<div class="animated fadeIn">
+  <b-row>
+    <b-col sm="6" md="5">
+      <b-card class="card-accent-primary">
+        <div slot="header">
+          Điều kiện
+        </div>
+        <b-form>
+          <b-form-group label="Ngày" label-for="date" :label-cols="4" :horizontal="true">
+            <datepicker :calendar-button="true" :bootstrapStyling="true" :format="customFormatter" id="date" v-model="condition.date" :required="true"></datepicker>
+          </b-form-group>
+          <b-form-group label="Sensor" label-for="sensor" :label-cols="4" :horizontal="true">
+            <b-form-select id="sensor" name="sensor" v-model="condition.sensor" :options="sensors">
+              <template slot="first">
+                <option value="null" disabled>--Chọn Sensor--</option>
+              </template>
+            </b-form-select>
+          </b-form-group>
+          <b-form-group label="Số điểm" label-for="pointNumber" :label-cols="4" :horizontal="true">
+            <b-form-select id="pointNumber" name="pointNumber" v-model="condition.pointNumber" :options="pointNumber">
+            </b-form-select>
+          </b-form-group>
+          <div slot="footer" class="float-right">
+            <b-button @click="getData" size="sm" variant="primary"><i class="fa fa-search"></i> Tạo biểu đồ</b-button>
+          </div>
+        </b-form>
+      </b-card>
+    </b-col>
+    <b-col sm="6" md="7">
+      <b-card class="card-accent-danger" header="Biểu đồ">
+        <main-chart-example :chart-data="datacollection" chartId="main-chart-01" class="chart-wrapper" height="300"></main-chart-example>
+      </b-card>
+      </b-card>
+    </b-col>
+  </b-row>
+  <!--/.row-->
+</div>
