@@ -28,6 +28,12 @@ export default {
       badge: {}
     },
     {
+      name: 'Cài đặt',
+      url: '/setting',
+      icon: 'icon-settings',
+      badge: {}
+    },
+    {
       title: true,
       name: 'Theme',
       class: '',

@@ -3,8 +3,8 @@
   <b-card>
     <b-row>
       <b-col sm="5">
-        <h4 id="traffic" class="card-title mb-0">Traffic</h4>
-        <div class="small text-muted">November 2017</div>
+        <h4 id="traffic" class="card-title mb-0">Nhiệt độ</h4>
+        <div class="small text-muted"></div>
       </b-col>
     </b-row>
     <main-chart-example :chart-data="datacollection" chartId="main-chart-01" class="chart-wrapper" style="height:300px;margin-top:40px;" height="300"></main-chart-example>
@@ -42,6 +42,7 @@ export default {
       datacollection: null,
       labels: [],
       temp_data: [],
+      currentDate: ''
     }
   },
   methods: {
@@ -55,7 +56,7 @@ export default {
           fill: false
         }]
       };
-    },
+    }
   },
   mqtt: {
     'ESP8266/SENDDATA'(data) {

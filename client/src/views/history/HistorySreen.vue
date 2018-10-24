@@ -102,7 +102,6 @@ export default {
   },
   created() {
     this.getListForHistory();
-    console.log(this.sensors);
   }
 }
 </script>

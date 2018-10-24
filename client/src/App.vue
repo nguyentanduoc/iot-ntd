@@ -6,8 +6,8 @@
 export default {
   name: 'app',
   mounted() {
-    this.$mqtt.subscribe('ESP8266/#');
-  },
+    this.$mqtt.subscribe('#');
+  }
 }
 </script>
 

@@ -14,11 +14,6 @@
 #define LED_OFF() digitalWrite(PIN_LED, LOW)
 #define LED_TOGGLE() digitalWrite(PIN_LED, digitalRead(PIN_LED) ^ 0x01)
 
-//define warnning
-#define PIN_WARNNING 5
-#define LED_WARNNING_ON() digitalWrite(PIN_WARNNING, HIGH)
-#define LED_WARNNING_OFF() digitalWrite(PIN_WARNNING, LOW)
-
 #define DHTPIN 14 // define input dht11
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
@@ -36,7 +31,6 @@ String result = "";
 long lastMsg = 0;
 char msg[50];
 int value = 0;
-char message_buff[100]; // this buffers our incoming messages so we can do something on certain commands
 WiFiClient espClient;
 PubSubClient client(espClient);
 Ticker ticker;
@@ -49,7 +43,6 @@ void reconnect() {
     if (client.connect(clientId.c_str(), client_username, client_password)) {
       Serial.println("connected");
       //      client.publish("esp8266/temandhum", "hello app");
-      client.subscribe("API/#");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -97,37 +90,36 @@ void exit_smart()
 void setup() {
   Serial.begin(115200);
   Serial.setDebugOutput(true);
+
   pinMode(PIN_LED, OUTPUT);
   pinMode(PIN_BUTTON, INPUT);
   ticker.attach(1, tick);
-  pinMode(PIN_WARNNING, OUTPUT);
   Serial.println("Setup done");
 }
 void callback(char* topic, byte* payload, unsigned int length) {
   String my_str;
-  DynamicJsonBuffer jsonBuffer;
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
-  Serial.println();
-  if (String(topic) == String("API/WARNING/" + dth11TempId)) {
-    int i = 0;
-    for (i = 0; i < length; i++) {
-      message_buff[i] = payload[i];
-    }
-    message_buff[i] = '\0';
-    String msgString = String(message_buff);
-    Serial.println(msgString);
-    JsonObject& root = jsonBuffer.parseObject(msgString);
-    int warning = root["warning"];
-    int type = root["type"];
-    Serial.println(warning);
-    if(warning == 1) {
-      LED_WARNNING_ON();
-    } else {
-      LED_WARNNING_OFF();
-    }
+
+  if (String(topic) == String("API/WARNING/",dth11TempId)) {
+    Serial.print(payload[0]);
+    //if ((char)payload[0] == '1') {
+      //digitalWrite(LED_TEMP, 1);
+    //}
+    //else {
+      //digitalWrite(LED_TEMP, 0);
+    //}
   }
+//  if (String(topic) == String("web/reqclient/hump")) {
+//    Serial.print(payload[0]);
+//    if ((char)payload[0] == '1') {
+//      digitalWrite(LED_HUMP, 1);
+//    }
+//    else {
+//      digitalWrite(LED_HUMP, 0);
+//    }
+//  }
 }
 void loop() {
   if (longPress()) {

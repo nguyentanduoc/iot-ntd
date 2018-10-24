@@ -132,7 +132,6 @@ export default {
   methods: {
     create(evt) {
       evt.preventDefault();
-      console.log(this.arduino.name);
       Arduino.create({
           arduino: this.arduino
         })

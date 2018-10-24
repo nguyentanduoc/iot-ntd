@@ -15,7 +15,7 @@
     <b-navbar-nav class="ml-auto">
       <b-nav-item class="d-md-down-none">
         <i class="icon-bell"></i>
-        <b-badge pill variant="danger">5</b-badge>
+        <b-badge pill variant="danger" v-if="sensorWarnning.length > 0">{{sensorWarnning.length}}</b-badge>
       </b-nav-item>
       <b-nav-item class="d-md-down-none">
         <i class="icon-list"></i>
@@ -99,7 +99,8 @@ export default {
   },
   data() {
     return {
-      nav: nav.items
+      nav: nav.items,
+      sensorWarnning: []
     }
   },
   computed: {
@@ -108,6 +109,24 @@ export default {
     },
     list() {
       return this.$route.matched.filter((route) => route.name || route.meta.label)
+    }
+  },
+  mqtt: {
+    'API/WARNING/#'(data) {
+      var str = "";
+      for (var i = 0; i < data.length; i++) {
+        str += String.fromCharCode(parseInt(data[i]));
+      }
+      var obj = JSON.parse(str);
+      if (obj.warning == 1) {
+        if (this.sensorWarnning.indexOf(obj.sensor) == -1) {
+          this.sensorWarnning.push(obj.sensor);
+        }
+      } else {
+        if (this.sensorWarnning.indexOf(obj.sensor) == 0) {
+          this.sensorWarnning.pop();
+        }
+      }
     }
   }
 }

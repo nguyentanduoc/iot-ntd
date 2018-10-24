@@ -130,6 +130,21 @@ var router = new Router({
           ]
         },
         {
+          path: '/setting',
+          name: 'Setting',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          meta: {
+           requiresAuth: true
+          },children: [
+            {
+              path: '',
+              component: () => import('@/views/setting/SettingSreen')
+            }
+          ]
+        },
+        {
           path: 'theme',
           redirect: '/theme/colors',
           name: 'Theme',
