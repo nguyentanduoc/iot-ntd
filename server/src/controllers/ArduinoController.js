@@ -28,12 +28,12 @@ module.exports = {
               });
             })
             .catch(err => {
-              res.status(400).json({
+              res.status(406).json({
                 message: err
               });
             });
         } else {
-          res.status(400).json({
+          res.status(406).json({
             message: `Arduino đã tồn tại`
           });
         }

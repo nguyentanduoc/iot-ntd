@@ -1,11 +1,17 @@
-const mongoose = require('mongoose');
-const setting = new mongoose.Schema({
+let mongoose = require('mongoose');
+let setting = new mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   sensor: [{
     type: mongoose.Schema.ObjectId,
     ref: 'sensor'
   }],
-  max: Number,
-  min: Number
+  max: {
+    type: Number,
+    required: true
+  },
+  min: {
+    type: Number,
+    required: true
+  }
 });
 module.exports = mongoose.model('setting', setting);

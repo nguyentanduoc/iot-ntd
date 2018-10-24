@@ -1,8 +1,9 @@
-var UserController = require('./controllers/UserController');
-var AuthControllerPolicy = require('./policies/AuthControllerPolicy');
-var ArduinoController = require('./controllers/ArduinoController');
-var SensorController = require('./controllers/SensorController');
-var DataController = require('./controllers/DataController');
+const UserController = require('./controllers/UserController');
+const AuthControllerPolicy = require('./policies/AuthControllerPolicy');
+const ArduinoController = require('./controllers/ArduinoController');
+const SensorController = require('./controllers/SensorController');
+const DataController = require('./controllers/DataController');
+const SettingController = require('./controllers/SettingController');
 module.exports = (app) => {
   // user url
   app.post('/register',
@@ -32,4 +33,8 @@ module.exports = (app) => {
   app.post('/sensor/getListForHistory', SensorController.getListForHistory);
   // data url
   app.post('/data/getDataForChartLine', DataController.getDataForChartLine);
+  // setting url
+  app.post('/setting/create', SettingController.create);
+  app.post('/setting/findByIdSensor', SettingController.findByIdSensor);
+  app.post('/setting/modified', SettingController.modified);
 };

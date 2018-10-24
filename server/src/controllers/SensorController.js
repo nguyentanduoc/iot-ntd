@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var Sensor = require('../models/Sensor');
+const mongoose = require('mongoose');
+const Sensor = require('../models/Sensor');
 module.exports = {
   create(req, res) {
     var {
@@ -28,7 +28,7 @@ module.exports = {
               });
             })
             .catch(err => {
-              res.status(400).json({
+              res.status(406).json({
                 message: err
               });
             });
