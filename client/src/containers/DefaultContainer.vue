@@ -13,7 +13,7 @@
       <b-nav-item class="px-3">Settings</b-nav-item>
     </b-navbar-nav>
     <b-navbar-nav class="ml-auto">
-      <b-nav-item class="d-md-down-none">
+      <b-nav-item class="d-md-down-none" @click="goToNotification">
         <i class="icon-bell"></i>
         <b-badge pill variant="danger" v-if="sensorWarnning.length > 0">{{sensorWarnning.length}}</b-badge>
       </b-nav-item>
@@ -109,6 +109,13 @@ export default {
     },
     list() {
       return this.$route.matched.filter((route) => route.name || route.meta.label)
+    }
+  },
+  methods: {
+    goToNotification() {
+      this.$router.push({
+        path: 'notification'
+      });
     }
   },
   mqtt: {
