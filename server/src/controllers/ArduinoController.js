@@ -9,7 +9,7 @@ module.exports = {
       name: arduino.name
     }, function(err, docs) {
       if (err) {
-        res.status(400).json({
+        res.status(406).json({
           message: err
         });
       } else {
@@ -23,7 +23,7 @@ module.exports = {
           });
           arduinoModel.save()
             .then(() => {
-              res.status(201).json({
+              res.status(200).json({
                 message: 'Tạo thành công!'
               });
             })
@@ -45,11 +45,11 @@ module.exports = {
       'create_date': -1
     }).limit(5).exec((err, docs) => {
       if (!err && docs) {
-        res.status(201).json({
+        res.status(200).json({
           arduinoList: docs
         });
       } else {
-        res.status(401).json({
+        res.status(406).json({
           message: `Xảy ra lỗi khi try vấn`
         });
       }
@@ -63,11 +63,11 @@ module.exports = {
       _id: id
     }).remove().exec((err) => {
       if (!err) {
-        res.status(201).json({
+        res.status(200).json({
           message: `Xóa thành công`
         });
       } else {
-        res.status(401).json({
+        res.status(406).json({
           message: `Xảy ra lỗi khi try vấn`
         });
       }
@@ -81,12 +81,37 @@ module.exports = {
       _id: id
     }).exec((err, docs) => {
       if (!err) {
-        res.status(201).json({
+        res.status(200).json({
           arduino: docs
         });
       } else {
-        res.status(401).json({
+        res.status(406).json({
           message: `Xảy ra lỗi khi try vấn`
+        });
+      }
+    });
+  },
+  modified(req, res) {
+    var {
+      arduino
+    } = req.body;
+    Arduino.updateOne({
+      _id: arduino._id
+    }, {
+      $set: {
+        name: arduino.name,
+        location: arduino.location,
+        date_update: new Date()
+      }
+    }).exec(function(err, doc) {
+      if (err) {
+        res.status(406).json({
+          message: err
+        });
+      } else {
+        res.status(200).json({
+          message: 'Cập nhật thành công',
+          arduino: doc
         });
       }
     });

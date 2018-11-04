@@ -5,7 +5,8 @@ import Setting from '@/services/Setting.js'
 export default {
   name: 'sensor-setting',
   props: {
-    idSensor: String
+    idSensor: String,
+    name: String
   },
   data: () => ({
     showAlertListData: false,

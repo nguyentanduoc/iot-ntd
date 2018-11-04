@@ -145,6 +145,21 @@ var router = new Router({
           ]
         },
         {
+          path: '/rfid',
+          name: 'rfid',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          meta: {
+           requiresAuth: true
+          },children: [
+            {
+              path: '',
+              component: () => import('@/views/rfid/RFIDSreen')
+            }
+          ]
+        },
+        {
           path: 'theme',
           redirect: '/theme/colors',
           name: 'Theme',

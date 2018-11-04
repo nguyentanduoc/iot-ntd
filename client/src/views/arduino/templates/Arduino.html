@@ -1,0 +1,79 @@
+<div class="animated fadeIn">
+  <b-row>
+    <b-col md="7">
+      <b-card>
+        <div slot="header">
+          <strong>Aruino</strong> List
+          <div class="float-right">
+          </div>
+        </div>
+        <b-alert :show="showAlertListData" :variant="colorAlert">{{msg}}</b-alert>
+        <b-table responsive="sm" :items="dataList" :fields="fields" :fixed="true" hover @row-clicked="myRowClickHandler">
+          <template slot="status" slot-scope="data">
+            <b-badge :variant="getBadge(data.item.status)">{{getLableStatus(data.item.status)}}</b-badge>
+          </template>
+          <!-- <template slot="date_create" slot-scope="data">
+            {{data.item.date_create | moment("DD-MM-YYYY")}}
+          </template>
+          <template slot="date_update" slot-scope="data">
+            {{data.item.date_update | moment("DD-MM-YYYY")}}
+          </template> -->
+          <template slot="options" slot-scope="data">
+            <b-button variant="danger" size="sm" @click.stop="deleteArduino(data.item._id)"> Xóa
+          </b-button>
+          </template>
+        </b-table>
+        <nav>
+          <!-- <b-pagination :total-rows="getRowCount(items)" :per-page="perPage" v-model="currentPage" prev-text="Prev" next-text="Next" hide-goto-end-buttons /> -->
+        </nav>
+      </b-card>
+    </b-col>
+    <b-col md="5">
+      <b-card>
+        <div slot="header">
+          <strong>Aruino</strong> Details
+          <div class="float-right">
+            <b-button size="sm" variant="success" @click.stop="resetFrom">
+                <i class="fa fa-plus fa-lg"></i>
+            </b-button>
+          </div>
+        </div>
+        <b-form @submit="create">
+          <b-alert :show="showAlert" :variant="colorAlert">{{msg}}</b-alert>
+          <b-form-group label="Mã Arduino" label-for="id" :label-cols="4" :horizontal="true">
+            <b-form-input id="name" name="id" type="text" v-model="arduino._id" :disabled="true"></b-form-input>
+          </b-form-group>
+          <b-form-group label="Tên Arduino" label-for="name" :label-cols="4" :horizontal="true">
+            <b-form-input id="name" name="name" type="text" v-model="arduino.name" required></b-form-input>
+          </b-form-group>
+          <b-form-group label="Vị trí Arduino" label-for="location" :label-cols="4" :horizontal="true">
+            <b-form-input id="location" name="location" type="text" v-model="arduino.location" required></b-form-input>
+          </b-form-group>
+          <b-form-group label="Ngày Tạo" label-for="basicName" :label-cols="4" :horizontal="true">
+            <datepicker :bootstrapStyling="true" :format="customFormatter" id="dateCreate" :disabled="true" v-model="arduino.date_create"></datepicker>
+          </b-form-group>
+          <b-form-group label="Ngày Cập Nhật" label-for="basicName" :label-cols="4" :horizontal="true">
+            <datepicker :bootstrapStyling="true" :format="customFormatter" id="dateUpdate" :disabled="true" v-model="arduino.date_update"></datepicker>
+          </b-form-group>
+          <b-form-group label="Tình Trạng" label-for="staus" :label-cols="4" :horizontal="true">
+            <b-form-radio-group id="staus" name="staus">
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" v-model="arduino.status" value="1" checked>
+                <label class="custom-control-label" for="customRadioInline1">Hoạt động</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input" v-model="arduino.status" value="2">
+                <label class="custom-control-label" for="customRadioInline2">Ngừng hoạt động</label>
+              </div>
+            </b-form-radio-group>
+          </b-form-group>
+          <div slot="footer" class="float-right">
+            <b-button v-if="isUpdate == false" type="submit" size="md" variant="primary" class="mr-1"><i class="fa fa-dot-circle-o"></i> Lưu</b-button>
+            <b-button v-if="isUpdate == true" type="submit" size="md" variant="primary" class="mr-1"><i class="fa fa-pencil-square-o"></i> Cập Nhật</b-button>
+            <b-button type="reset" size="md" variant="danger"  @click.stop="reset"><i class="fa fa-ban"></i> Hủy</b-button>
+          </div>
+        </b-form>
+      </b-card>
+    </b-col>
+  </b-row>
+</div>

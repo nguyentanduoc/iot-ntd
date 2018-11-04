@@ -125,7 +125,7 @@ module.exports = {
       }
     });
   },
-  getListForHistory(req, res) {
+  getSensorForChart(req, res) {
     Sensor.find({
       dataType: '1'
     }, function(err, docs) {

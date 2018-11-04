@@ -23,10 +23,13 @@ export default {
         scaleStepWidth: 10,
         //Number - The scale starting value
         scaleStartValue: 0,
+        scaleOverride: true,
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero: true
+              beginAtZero: true,
+              padding: 10,
+              suggestedMax: 60
             },
             gridLines: {
               display: true

@@ -1,11 +1,11 @@
 <template>
 <b-row>
-  <b-col cols="12" lg="6">
+  <b-col cols="6" lg="6">
     <b-card>
       <div slot="header">
         Chi tiết <strong>Người dùng</strong>
         <div class="float-right">
-          <b-button @click="restPsw" class="mr-1" variant="warning">Reset Mật Khẩu</b-button>
+          <b-button @click="restPsw" class="mr-1" variant="warning" size="sm">Mật khẩu mặt định</b-button>
         </div>
       </div>
       <b-form>
@@ -36,9 +36,29 @@
       <div slot="footer">
         <b-button @click="goBack">Trở lại</b-button>
         <div class="float-right">
-          <b-button @click="edit" class="mr-1" variant="info" v-if="!isEdit">Chỉnh Sửa</b-button>
+          <b-button @click="edit" variant="primary" aria-pressed="true" v-if="!isEdit">Chỉnh Sửa</b-button>
           <b-button @click="save" class="mr-1" variant="primary" v-if="isEdit">Lưu</b-button>
           <b-button @click="cancel" class="mr-1" variant="danger" v-if="isEdit">Hủy</b-button>
+        </div>
+      </div>
+    </b-card>
+  </b-col>
+  <b-col cols="6" lg="6">
+    <b-card>
+      <div slot="header">
+        <strong>RFID</strong>
+      </div>
+      <b-form>
+        <b-alert :show="arlert" :variant="color">{{msgRFID}}</b-alert>
+        <b-form-group label="Mã Thẻ" label-for="id" :label-cols="4" :horizontal="true">
+          <b-form-input id="valueRFID" name="valueRFID" type="text" v-model="valueRFID" :disabled="true"></b-form-input>
+        </b-form-group>
+      </b-form>
+      <div slot="footer">
+        <div class="float-right">
+          <b-button @click="settingRFID" variant="primary" aria-pressed="true" v-if="!isSetting">Cài đặt</b-button>
+          <b-button @click="saveRFID" class="mr-1" variant="primary" v-if="isSetting">Lưu</b-button>
+          <b-button @click="cancelRFID" class="mr-1" variant="danger" v-if="isSetting">Hủy</b-button>
         </div>
       </div>
     </b-card>
@@ -48,6 +68,7 @@
 
 <script>
 import AuthService from '@/services/AuthService.js'
+import RFID from '@/services/RFID.js'
 import moment from 'moment'
 import Datepicker from 'vuejs-datepicker'
 export default {
@@ -74,7 +95,12 @@ export default {
       notification: false,
       err: false,
       msg: '',
-      isEdit: false
+      isEdit: false,
+      arlert: false,
+      msgRFID: '',
+      color: '',
+      isSetting: false,
+      valueRFID: ''
     }
   },
   methods: {
@@ -144,10 +170,51 @@ export default {
         err: true;
         this.msg = err;
       })
+    },
+    settingRFID() {
+      this.isSetting = true;
+      this.arlert = true;
+      this.color = 'warning';
+      this.msgRFID = 'Chờ chèn thẻ...';
+      this.$mqtt.publish('VUEJS/FRID', `0`);
+    },
+    saveRFID() {
+      RFID.create({
+          userId: this.user._id,
+          rfidValue: this.valueRFID
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.color = 'success';
+            this.msgRFID = 'Cài đặt thành công';
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    cancelRFID() {
+      this.isSetting = false;
+      this.arlert = false;
+      this.color = 'warning';
     }
   },
   created() {
     this.getUser();
+  },
+  mqtt: {
+    'ESP8266/GET_UID_FOR_SETUP'(data) {
+      var str = "";
+      for (var i = 0; i < data.length; i++) {
+        str += String.fromCharCode(parseInt(data[i]));
+      }
+      var obj = JSON.parse(str);
+      this.arlert = true;
+      this.color = 'success';
+      1
+      this.msgRFID = 'Nhận thẻ thành công';
+      this.valueRFID = obj.value;
+    }
   }
 }
 </script>

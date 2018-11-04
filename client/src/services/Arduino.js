@@ -12,5 +12,8 @@ export default {
   },
   findById(id){
     return Api().post(urlBase + '/findById', id);
-  }
+  },
+  modified(arduino){
+    return Api().post(urlBase + '/modified', arduino);
+  },
 };

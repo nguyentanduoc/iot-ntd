@@ -54,7 +54,7 @@ export default {
       return moment(date).format('L');
     },
     getListForHistory() {
-      Sensor.getListForHistory()
+      Sensor.getSensorForChart()
         .then(res => {
           if (res.data.sensors) {
             for (var i in res.data.sensors) {

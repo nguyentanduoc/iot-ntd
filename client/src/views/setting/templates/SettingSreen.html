@@ -1,29 +1,6 @@
 <div class="animated fadeIn">
   <b-row>
-    <b-col sm="6" md="4">
-      <b-card class="card-accent-primary">
-        <div slot="header">
-          Tạo cài đặt
-        </div>
-        <b-form @submit="onCreate">
-          <b-alert class="text-center" :show="showAlert" :variant="colorAlert">{{msg}}</b-alert>
-          <b-form-group label="Sensor" label-for="sensor" :label-cols="4" :horizontal="true">
-            <b-form-select @change.native="change" id="sensor" v-model="setting.sensor" :options="sensors">
-            </b-form-select>
-          </b-form-group>
-          <b-form-group label="GTNN" label-for="min" :label-cols="4" :horizontal="true">
-            <b-form-input v-model="setting.min" type="text" placeholder="Giá trị nhỏ nhất" :state="setting.min.length?'success':'warning'" required></b-form-input>
-          </b-form-group>
-          <b-form-group label="GTLN" label-for="max" :label-cols="4" :horizontal="true">
-            <b-form-input v-model="setting.max" type="text" placeholder="Giá trị lớn nhất" :state="setting.max.length?'success':'warning'" required></b-form-input>
-          </b-form-group>
-          <div slot="footer" class="float-right">
-            <b-button type="submit" size="sm" variant="primary"><i class="cui-cog"></i> Lưu</b-button>
-          </div>
-        </b-form>
-      </b-card>
-    </b-col>
-    <b-col sm="6" md="8">
+    <b-col sm="12" md="12">
       <transition name="fade">
         <b-card class="card-accent-success" v-if="show">
           <div slot="header">
@@ -40,8 +17,8 @@
           <b-collapse id="collapse1" visible>
             <b-card-body>
               <b-row>
-                <b-col md="6" v-for="item in sensors" :key="item.values">
-                  <SettingSensor :idSensor="item.value"/>
+                <b-col md="4" v-for="item in sensors" :key="item.values">
+                  <SettingSensor :idSensor="item.value" :name="item.text"/>
                 </b-col>
               </b-row>
             </b-card-body>

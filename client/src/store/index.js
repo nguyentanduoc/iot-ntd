@@ -7,11 +7,15 @@ export default new Vuex.Store({
   state: {
     token: null,
     user: null,
-    isUserLoggedIn: false
+    isUserLoggedIn: false,
+    arduinos: []
   },
   getters: {
     isUserLoggedIn: state => {
       return state.isUserLoggedIn;
+    },
+    getSensor: state => {
+      return state.arduinos;
     }
   },
   mutations: {
@@ -25,6 +29,9 @@ export default new Vuex.Store({
     },
     setUser(state, user) {
       state.user = user;
+    },
+    setSensorForChart(state, sensors){
+      state.arduinos = sensors;
     }
   },
   actions: {
@@ -37,6 +44,9 @@ export default new Vuex.Store({
       commit
     }, user) {
       commit('setUser', user);
+    },
+    setSensorForChart({commit}, sensors){
+      commit('setSensorForChart', sensors);
     }
   }
 });

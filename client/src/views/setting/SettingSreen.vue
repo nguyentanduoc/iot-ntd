@@ -23,8 +23,8 @@ export default {
     isEdit: false
   }),
   methods: {
-    getListForHistory() {
-      Sensor.getListForHistory()
+    getSensorForChart() {
+      Sensor.getSensorForChart()
         .then(res => {
           if (res.data.sensors) {
             for (var i in res.data.sensors) {
@@ -95,7 +95,7 @@ export default {
     }
   },
   created() {
-    this.getListForHistory();
+    this.getSensorForChart();
   }
 }
 </script>

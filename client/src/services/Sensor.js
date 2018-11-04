@@ -18,5 +18,8 @@ export default {
   },
   getListForHistory(){
     return Api().post(urlBase + '/getListForHistory');
+  },
+  getSensorForChart() {
+    return Api().post(urlBase + '/getSensorForChart');
   }
 };

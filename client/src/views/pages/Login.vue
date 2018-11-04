@@ -51,6 +51,7 @@
 
 <script>
 import AuthenticationService from '@/services/AuthService.js'
+import Sensor from '@/services/Sensor.js'
 export default {
   name: 'Login',
   data() {
@@ -62,6 +63,17 @@ export default {
     };
   },
   methods: {
+    getSensorForChart() {
+      Sensor.getSensorForChart()
+        .then((res) => {
+          if (res.data.sensors) {
+            this.$store.dispatch('setSensorForChart', res.data.sensors);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     login(evt) {
       evt.preventDefault();
       AuthenticationService.login({
@@ -70,8 +82,9 @@ export default {
         })
         .then(response => {
           if (response.status == 201 && response.data) {
-            this.$store.dispatch('setToken', response.data.user);
-            this.$store.dispatch('setUser', response.data.token);
+            this.$store.dispatch('setToken', response.data.token);
+            this.$store.dispatch('setUser', response.data.user);
+            this.getSensorForChart();
             this.$store.getters.isUserLoggedIn;
             this.$router.push({
               name: 'Dashboard'
@@ -79,6 +92,7 @@ export default {
           }
         })
         .catch(error => {
+          console.error(error);
           this.error = true;
           if (error.response) {
             this.errorMsg = error.response.data.error;

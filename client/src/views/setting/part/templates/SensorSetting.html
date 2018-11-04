@@ -1,6 +1,6 @@
 <b-card border-variant="secondary" header-border-variant="secondary">
   <div slot="header">
-    {{setting.sensor[0].name}}
+    {{name}}
   </div>
   <b-form-group label="GTNN" label-for="min" :label-cols="4" :horizontal="true">
     <b-form-input v-model="setting.min" type="text" placeholder="Giá trị nhỏ nhất" :disabled="!isEdit"></b-form-input>
@@ -9,8 +9,8 @@
     <b-form-input v-model="setting.max" type="text" placeholder="Giá trị lớn nhất" :disabled="!isEdit"></b-form-input>
   </b-form-group>
   <div class="float-right">
-    <b-button v-show="!isEdit" size="sm" variant="info" @click="isEdit = true"><i class="icon-pencil"></i> Cập nhật</b-button>
-    <b-button v-show="isEdit" type="submit" size="sm" variant="primary"><i class="fa fa-download"></i> Lưu</b-button>
-    <b-button v-show="isEdit" size="sm" variant="danger" @click="isEdit = false"><i class="fa fa-ban"></i> Hủy</b-button>
+    <b-button class="ml-1" v-show="!isEdit" size="sm" block variant="success" @click="isEdit = true"><i class="icon-pencil"></i> Cập nhật</b-button>
+    <b-button class="ml-1" v-show="isEdit" type="submit" size="sm" variant="primary"><i class="fa fa-download"></i> Lưu</b-button>
+    <b-button class="ml-1" v-show="isEdit" size="sm" variant="danger" @click="isEdit = false"><i class="fa fa-ban"></i> Hủy</b-button>
   </div>
 </b-card>

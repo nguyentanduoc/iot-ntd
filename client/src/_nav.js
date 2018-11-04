@@ -34,6 +34,12 @@ export default {
       badge: {}
     },
     {
+      name: 'RFID',
+      url: '/rfid',
+      icon: 'fa fa-id-badge',
+      badge: {}
+    },
+    {
       title: true,
       name: 'Theme',
       class: '',
