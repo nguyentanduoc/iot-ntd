@@ -2,6 +2,7 @@ import Api from './Api';
 var urlBase = 'setting';
 export default {
   create(setting) {
+    console.log(setting);
     return Api().post(urlBase + '/create', setting);
   },
   findById(id) {

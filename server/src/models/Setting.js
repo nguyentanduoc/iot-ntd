@@ -12,6 +12,9 @@ let setting = new mongoose.Schema({
   min: {
     type: Number,
     required: true
+  },
+  status: {
+    type: Boolean
   }
 });
 module.exports = mongoose.model('setting', setting);

@@ -24,7 +24,6 @@ export default {
   methods: {},
   created() {
     this.sensors = this.$store.getters.getSensor;
-    console.log(this.sensors);
   }
 }
 </script>

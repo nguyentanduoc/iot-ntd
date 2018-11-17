@@ -39,7 +39,6 @@ client.on('message', function(topic, message) {
   if (ParseJSON(message) != null) {
     if (topic === 'ESP8266/SENDDATA') {
       var arduinoSenddata = ParseJSON(message);
-      console.log(arduinoSenddata);
       if (arduinoSenddata.sensor) {
         Sensor.findOne({
           _id: arduinoSenddata.sensor._id
@@ -47,32 +46,50 @@ client.on('message', function(topic, message) {
           if (err) {
             console.log(err + arduinoSenddata.sensor._id);
           } else {
-            var receiveData = new ReceiveData({
-              _id: new mongoose.Types.ObjectId(),
-              sensor: docs,
-              values: arduinoSenddata.value
-            });
-            receiveData.save();
-          }
-        });
-        Setting.findOne({
-          sensor: arduinoSenddata.sensor._id
-        }, (err, setting) => {
-          if (err) {
-            console.log(err);
-          } else {
-            if (setting) {
-              console.log(`${setting.min} min, ${setting.max} max, value ${arduinoSenddata.value}`);
-              var dataCondition = arduinoSenddata;
-              if (setting.min < arduinoSenddata.value && arduinoSenddata.value < setting.max) {
-                client.publish(`API/WARNING/${arduinoSenddata.sensor._id}`, `{"warning": 0, "type": 0, "sensor": "${arduinoSenddata.sensor._id}"}`);
-              } else {
-                if (dataCondition.value > setting.max) {
-                  client.publish(`API/WARNING/${arduinoSenddata.sensor._id}`, `{"warning": 1, "type": 1, "sensor": "${arduinoSenddata.sensor._id}"}`);
+            if (Number(docs.dataType) === 1) {
+              var receiveData = new ReceiveData({
+                _id: new mongoose.Types.ObjectId(),
+                sensor: docs,
+                values: arduinoSenddata.value
+              });
+              receiveData.save();
+              Setting.findOne({
+                sensor: arduinoSenddata.sensor._id
+              }, (err, setting) => {
+                if (err) {
+                  console.log(err);
                 } else {
-                  if (dataCondition.value < setting.min) {
-                    client.publish(`API/WARNING/${arduinoSenddata.sensor._id}`, `{"warning": 1, "type": 2, "sensor": "${arduinoSenddata.sensor._id}"}`);
+                  if (setting) {
+                    if (setting.status === true) {
+                      var dataCondition = arduinoSenddata;
+                      if (setting.min < arduinoSenddata.value && arduinoSenddata.value < setting.max) {
+                        console.log('send warnning');
+                        client.publish(`API/WARNING`, `{"warning": 0, "type": 0, "sensor": "${arduinoSenddata.sensor._id}", "sensorType" : "1"}`);
+                      } else {
+                        if (dataCondition.value > setting.max) {
+                          console.log('send warnning');
+                          client.publish(`API/WARNING`, `{"warning": 1, "type": 1, "sensor": "${arduinoSenddata.sensor._id}", "sensorType" : "1"}`);
+                        } else {
+                          if (dataCondition.value < setting.min) {
+                            console.log('send warnning');
+                            client.publish(`API/WARNING`, `{"warning": 1, "type": 2, "sensor": "${arduinoSenddata.sensor._id}", "sensorType" : "1"}`);
+                          }
+                        }
+                      }
+                    } else {
+                      client.publish(`API/WARNING`, `{"warning": 0, "type": 0, "sensor": "${arduinoSenddata.sensor._id}", "sensorType" : "1"}`);
+                    }
                   }
+                }
+              });
+            } else {
+              if (Number(docs.dataType) === 3) {
+                if (Number(arduinoSenddata.value) === 0) {
+                  console.log('canh bao lua');
+                  client.publish(`API/WARNING`, `{"warning": 1, "type": 1, "sensor": "${arduinoSenddata.sensor._id}", "sensorType" : "3"}`);
+                } else {
+                  console.log('ngung bao lua');
+                  client.publish(`API/WARNING`, `{"warning": 0, "type": 1, "sensor": "${arduinoSenddata.sensor._id}", "sensorType" : "3"}`);
                 }
               }
             }

@@ -80,7 +80,7 @@ export default {
     caption: {
       type: String,
       default: 'User id'
-    },
+    }
   },
   data: () => {
     return {
@@ -211,7 +211,6 @@ export default {
       var obj = JSON.parse(str);
       this.arlert = true;
       this.color = 'success';
-      1
       this.msgRFID = 'Nhận thẻ thành công';
       this.valueRFID = obj.value;
     }

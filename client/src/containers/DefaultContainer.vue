@@ -3,29 +3,29 @@
   <AppHeader fixed>
     <SidebarToggler class="d-lg-none" display="md" mobile />
     <b-link class="navbar-brand" to="#">
-      <img class="navbar-brand-full" src="img/brand/logo.svg" width="89" height="25" alt="CoreUI Logo">
-      <img class="navbar-brand-minimized" src="img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
+      <img class="navbar-brand-full" src="img/smart_thome_icon.jpg" height="40" alt="Smart Home">
+      Smart Home
     </b-link>
     <SidebarToggler class="d-md-down-none" display="lg" />
     <b-navbar-nav class="d-md-down-none">
-      <b-nav-item class="px-3" to="/dashboard">Dashboard</b-nav-item>
-      <b-nav-item class="px-3" to="/users" exact>Users</b-nav-item>
-      <b-nav-item class="px-3">Settings</b-nav-item>
+      <b-nav-item class="px-3" to="/dashboard">Quan trắc</b-nav-item>
+      <b-nav-item class="px-3" to="/users" exact>Người dùng</b-nav-item>
+      <b-nav-item class="px-3" to="/setting">Cài đặt</b-nav-item>
     </b-navbar-nav>
     <b-navbar-nav class="ml-auto">
-      <b-nav-item class="d-md-down-none" @click="goToNotification">
+      <b-nav-item class="d-md-down-none" to="/notification">
         <i class="icon-bell"></i>
-        <b-badge pill variant="danger" v-if="sensorWarnning.length > 0">{{sensorWarnning.length}}</b-badge>
+        <b-badge pill variant="danger" v-if="coutWarning > 0">{{coutWarning}}</b-badge>
       </b-nav-item>
-      <b-nav-item class="d-md-down-none">
+      <!-- <b-nav-item class="d-md-down-none">
         <i class="icon-list"></i>
-      </b-nav-item>
-      <b-nav-item class="d-md-down-none">
+      </b-nav-item> -->
+      <!-- <b-nav-item class="d-md-down-none">
         <i class="icon-location-pin"></i>
-      </b-nav-item>
+      </b-nav-item> -->
       <DefaultHeaderDropdownAccnt />
     </b-navbar-nav>
-    <AsideToggler class="d-none d-lg-block" />
+    <!-- <AsideToggler class="d-none d-lg-block" /> -->
     <!--<AsideToggler class="d-lg-none" mobile />-->
   </AppHeader>
   <div class="app-body">
@@ -42,10 +42,10 @@
         <router-view></router-view>
       </div>
     </main>
-    <AppAside fixed>
-      <!--aside-->
-      <DefaultAside />
-    </AppAside>
+    <!-- <AppAside fixed> -->
+    <!--aside-->
+    <!-- <DefaultAside /> -->
+    <!-- </AppAside> -->
   </div>
   <TheFooter>
     <!--footer-->
@@ -76,9 +76,8 @@ import {
   Footer as TheFooter,
   Breadcrumb
 } from '@coreui/vue'
-import DefaultAside from './DefaultAside'
+//import DefaultAside from './DefaultAside'
 import DefaultHeaderDropdownAccnt from './DefaultHeaderDropdownAccnt'
-
 export default {
   name: 'full',
   components: {
@@ -88,7 +87,7 @@ export default {
     AppAside,
     TheFooter,
     Breadcrumb,
-    DefaultAside,
+    //DefaultAside,
     DefaultHeaderDropdownAccnt,
     SidebarForm,
     SidebarFooter,
@@ -100,8 +99,13 @@ export default {
   data() {
     return {
       nav: nav.items,
-      sensorWarnning: []
+      coutWarning: 0,
+      sensor: '',
+      audio: ''
     }
+  },
+  created() {
+    this.coutWarning = this.$store.getters.getSensorWarnningCount;
   },
   computed: {
     name() {
@@ -109,13 +113,6 @@ export default {
     },
     list() {
       return this.$route.matched.filter((route) => route.name || route.meta.label)
-    }
-  },
-  methods: {
-    goToNotification() {
-      this.$router.push({
-        path: 'notification'
-      });
     }
   },
   mqtt: {
@@ -126,14 +123,22 @@ export default {
       }
       var obj = JSON.parse(str);
       if (obj.warning == 1) {
-        if (this.sensorWarnning.indexOf(obj.sensor) == -1) {
-          this.sensorWarnning.push(obj.sensor);
-        }
+        this.$store.dispatch('addWarning', obj.sensor);
+        this.coutWarning = this.$store.getters.getSensorWarnningCount;
       } else {
-        if (this.sensorWarnning.indexOf(obj.sensor) == 0) {
-          this.sensorWarnning.pop();
-        }
+        console.log(obj);
+        this.$store.dispatch('subWarning', obj.sensor);
+        this.coutWarning = this.$store.getters.getSensorWarnningCount;
       }
+      //   if (obj.warning == 1) {
+      //     if (this.sensorWarnning.indexOf(obj.sensor) == -1) {
+      //       this.sensorWarnning.push(obj.sensor);
+      //     }
+      //   } else {
+      //     if (this.sensorWarnning.indexOf(obj.sensor) == 0) {
+      //       this.sensorWarnning.pop();
+      //     }
+      //   }
     }
   }
 }

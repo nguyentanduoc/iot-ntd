@@ -149,7 +149,7 @@ export default {
         .catch(err => {
           this.showAlertListData = true;
           this.msg = err;
-        })
+        });
     },
     rowClicked(item) {
       this.isModified = true;
@@ -164,7 +164,7 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        })
+        });
     },
     remove(id) {
       console.log(id);

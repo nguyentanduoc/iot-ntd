@@ -8,7 +8,8 @@ export default new Vuex.Store({
     token: null,
     user: null,
     isUserLoggedIn: false,
-    arduinos: []
+    arduinos: [],
+    sensorWarnning: []
   },
   getters: {
     isUserLoggedIn: state => {
@@ -16,6 +17,12 @@ export default new Vuex.Store({
     },
     getSensor: state => {
       return state.arduinos;
+    },
+    getSensorWarnningCount: state => {
+      return state.sensorWarnning.length;
+    },
+    getWarning: state => {
+        return state.sensorWarnning;
     }
   },
   mutations: {
@@ -30,8 +37,17 @@ export default new Vuex.Store({
     setUser(state, user) {
       state.user = user;
     },
-    setSensorForChart(state, sensors){
+    setSensorForChart(state, sensors) {
       state.arduinos = sensors;
+    },
+    addWarning(state, sensor) {
+      if(state.sensorWarnning.indexOf(sensor) === -1) {
+            state.sensorWarnning.push(sensor);
+      }
+    },
+    subWarning(state, sensor) {
+      var position = state.sensorWarnning.indexOf(sensor);
+      state.sensorWarnning.splice(position,1);
     }
   },
   actions: {
@@ -45,8 +61,20 @@ export default new Vuex.Store({
     }, user) {
       commit('setUser', user);
     },
-    setSensorForChart({commit}, sensors){
+    setSensorForChart({
+      commit
+    }, sensors) {
       commit('setSensorForChart', sensors);
+    },
+    addWarning({
+      commit
+    }, sensor) {
+      commit('addWarning', sensor);
+    },
+    subWarning({
+      commit
+    }, sensor) {
+      commit('subWarning', sensor);
     }
   }
 });

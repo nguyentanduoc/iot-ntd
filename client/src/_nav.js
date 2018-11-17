@@ -1,7 +1,7 @@
 export default {
   items: [
     {
-      name: 'Dashboard',
+      name: 'Quan trắc',
       url: '/dashboard',
       icon: 'icon-speedometer',
       badge: {
@@ -12,13 +12,12 @@ export default {
     {
       name: 'Aruino',
       url: '/arduino',
-      icon: 'icon-speedometer',
-      badge: {}
+      icon: 'fa fa-microchip'
     },
     {
       name: 'Sensor',
       url: '/sensor',
-      icon: 'icon-speedometer',
+      icon: 'fa fa-thermometer-half',
       badge: {}
     },
     {
@@ -34,9 +33,15 @@ export default {
       badge: {}
     },
     {
-      name: 'RFID',
-      url: '/rfid',
-      icon: 'fa fa-id-badge',
+      name: 'Cảnh báo',
+      url: '/notification',
+      icon: 'fa fa-bell',
+      badge: {}
+    },
+    {
+      name: 'Kiểm tra kết nối',
+      url: '/checkstatus',
+      icon: 'fa fa-chain-broken',
       badge: {}
     },
     {

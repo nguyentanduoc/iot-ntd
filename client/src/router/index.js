@@ -85,79 +85,52 @@ var router = new Router({
          }
         },
         {
-          path: '/arduino',
+          path: 'arduino',
           name: 'Arduino',
-          component: {
-            render (c) { return c('router-view') }
-          },
+          component: Arduino,
           meta: {
            requiresAuth: true
-          },children: [
-            {
-              path: '',
-              component: Arduino
-            }
-          ]
+          }
         },
         {
-          path: '/sensor',
+          path: 'sensor',
           name: 'Sensor',
-          component: {
-            render (c) { return c('router-view') }
-          },
+          component: () => import('@/views/sensor/SensorScreen.vue'),
           meta: {
            requiresAuth: true
-          },children: [
-            {
-              path: '',
-              component: () => import('@/views/sensor/SensorScreen.vue')
-            }
-          ]
+          }
         },
         {
-          path: '/history',
+          path: 'history',
           name: 'History',
-          component: {
-            render (c) { return c('router-view') }
-          },
+          component: () => import('@/views/history/HistorySreen'),
           meta: {
            requiresAuth: true
-          },children: [
-            {
-              path: '',
-              component: () => import('@/views/history/HistorySreen')
-            }
-          ]
+          }
         },
         {
-          path: '/setting',
+          path: 'setting',
           name: 'Setting',
-          component: {
-            render (c) { return c('router-view') }
-          },
+          component: () => import('@/views/setting/SettingSreen'),
           meta: {
            requiresAuth: true
-          },children: [
-            {
-              path: '',
-              component: () => import('@/views/setting/SettingSreen')
-            }
-          ]
+          }
         },
         {
-          path: '/rfid',
-          name: 'rfid',
-          component: {
-            render (c) { return c('router-view') }
-          },
+          path: 'notification',
+          name: 'Notification',
+          component: () => import('@/views/notification/NotificationScreen'),
           meta: {
            requiresAuth: true
-          },children: [
-            {
-              path: '',
-              component: () => import('@/views/rfid/RFIDSreen')
-            }
-          ]
+          }
+        },
+        {
+          path: 'checkstatus',
+          name: 'Check Status',
+          component: () => import('@/views/checkstatus/CheckStatusScreen'),
+          meta: {
+           requiresAuth: true
+          }
         },
         {
           path: 'theme',

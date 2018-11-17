@@ -57,7 +57,7 @@ export default {
           this.temp_data.shift();
         }
         moment.locale('vn');
-        this.labels.push(moment().format('LTS'));
+        this.labels.push(moment().format('HH:mm'));
         this.temp_data.push(obj.value);
         this.count++;
         this.fillData();

@@ -2,8 +2,14 @@
 </template>
 <script>
 import Setting from '@/services/Setting.js'
+import {
+  Switch as cSwitch
+} from '@coreui/vue'
 export default {
   name: 'sensor-setting',
+  components: {
+    cSwitch
+  },
   props: {
     idSensor: String,
     name: String
@@ -18,9 +24,15 @@ export default {
         name: ''
       }],
       max: '',
-      min: ''
+      min: '',
+      date_create: '',
+      date_update: '',
+      status: ''
     },
-    isEdit: false
+    isEdit: false,
+    showAlert: false,
+    colorAlert: '',
+    msg: ''
   }),
   methods: {
     getSetting() {
@@ -35,6 +47,27 @@ export default {
         .catch(err => {
           this.showAlertListData = true;
           this.msg = err;
+        });
+    },
+    update(evt) {
+      evt.preventDefault();
+      Setting.create({
+          setting: this.setting,
+          sensor: this.idSensor
+        })
+        .then(res => {
+          this.showAlert = true;
+          this.colorAlert = 'primary';
+          this.msg = 'Cài đặt thành công';
+          this.isEdit = false;
+          setTimeout(() => {
+            this.showAlert = false;
+          }, 3000);
+        })
+        .catch(err => {
+          this.showAlert = true;
+          this.colorAlert = 'danger';
+          this.msg = 'Cài đặt thất bại';
         });
     }
   },

@@ -1,49 +1,56 @@
-const mongoose = require('mongoose');
+const Mongoose = require('mongoose');
 const Setting = require('../models/Setting');
-const Sensor = require('../models/Sensor');
+// const Sensor = require('../models/Sensor');
 module.exports = {
   create(req, res) {
-    const reqSetting = req.body;
-    Sensor.findOne({
-      _id: reqSetting.sensor
-    }, (err, sensor) => {
+    const {
+      setting,
+      sensor
+    } = req.body;
+    Setting.findOne({
+      sensor: sensor
+    }, (err, resultSetting) => {
       if (err) {
         console.log(err);
       } else {
-        Setting.find({
-          sensor: sensor
-        }, (err, setting) => {
-          if (err) {
-            res.status(406).json({
-              message: err
-            });
-          } else {
-            if (setting.lenght > 0) {
-              console.log(setting);
-              res.status(406).json({
-                message: 'Sensor đã cài đặt dư liệu'
-              });
-            } else {
-              var settingModel = new Setting({
-                _id: new mongoose.Types.ObjectId(),
-                sensor: sensor,
-                min: reqSetting.min,
-                max: reqSetting.max
-              });
-              settingModel.save()
-                .then(() => {
-                  res.status(201).json({
-                    message: 'Cài đặt thành công!'
-                  });
-                })
-                .catch(err => {
-                  res.status(406).json({
-                    message: err
-                  });
-                });
+        if (resultSetting) {
+          Setting.updateOne({
+            sensor: sensor
+          }, {
+            $set: {
+              max: setting.max,
+              min: setting.min,
+              status: setting.status
             }
-          }
-        });
+          }, (docs) => {
+            console.log(docs);
+            res.status(200).json({
+              message: 'Tạo thành công!',
+              setting: docs
+            });
+          });
+        } else {
+          console.log(setting.status);
+          var createSetting = new Setting({
+            _id: new Mongoose.Types.ObjectId(),
+            max: setting.max,
+            min: setting.min,
+            sensor: sensor,
+            status: setting.status
+          });
+          createSetting.save()
+            .then((resultSetting) => {
+              res.status(200).json({
+                message: 'Tạo thành công!',
+                setting: resultSetting
+              });
+            })
+            .catch(err => {
+              res.status(400).json({
+                message: err
+              });
+            });
+        }
       }
     });
   },
